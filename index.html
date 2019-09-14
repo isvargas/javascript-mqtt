@@ -18,19 +18,19 @@
         <title>TESTE MQTT</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
         <script>
-            // Create a client instance
+            // instancia um novo cliente
             client = new Paho.MQTT.Client('127.0.0.1', Number('9001'), "clientId");
 
-            // set callback handlers
+            // seta funcoes callback
             client.onConnectionLost = onConnectionLost;
             client.onMessageArrived = onMessageArrived;
 
-            // connect the client
+            // conecta no broker
             client.connect({onSuccess:onConnect});
 
-            // called when the client connects
+            // funcao chamada ao conectar
             function onConnect() {
-                // Once a connection has been made, make a subscription and send a message.
+                // assina o topico 'teste' e envia a mensagem 'Hello'
                 console.log("onConnect");
                 client.subscribe("teste");
                 message = new Paho.MQTT.Message("Hello");
@@ -38,14 +38,14 @@
                 client.send(message);
             }
 
-            // called when the client loses its connection
+            // funcao chamada qdo perde a conexao
             function onConnectionLost(responseObject) {
                 if (responseObject.errorCode !== 0) {
                     console.log("onConnectionLost:"+responseObject.errorMessage);
                 }
             }
 
-            // called when a message arrives
+            // funcao chamada qdo receber uma mensagem do broker
             function onMessageArrived(message) {
                 console.log("onMessageArrived:"+message.payloadString);
             }    
